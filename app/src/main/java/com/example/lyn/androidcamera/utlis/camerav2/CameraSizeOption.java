@@ -1,13 +1,9 @@
-package com.example.lyn.androidcamera.camera2.utils;
+package com.example.lyn.androidcamera.utlis.camerav2;
 
-import android.content.res.Configuration;
-import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Size;
-import android.view.Surface;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 
 import java.util.ArrayList;

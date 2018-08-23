@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.camera2.utils;
+package com.example.lyn.androidcamera.utlis.camerav2;
 
 import android.app.Activity;
 import android.content.Context;

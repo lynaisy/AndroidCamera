@@ -1,6 +1,7 @@
-package com.example.lyn.androidcamera.camera2;
+package com.example.lyn.androidcamera.view.fragments.camera1;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,37 +12,35 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.example.lyn.androidcamera.R;
-import com.example.lyn.androidcamera.view.AutoFitTextureView;
+import com.example.lyn.androidcamera.utlis.camerav1.Camera1Helper;
+import com.example.lyn.androidcamera.view.customviews.AutoFitTextureView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class CameraV2Fragment extends Fragment {
+/**
+ * Created by Administrator on 2018/6/7.
+ * 使用textureView来预览视频流
+ */
+
+public class CameraV1TextureFragment extends Fragment {
     @BindView(R.id.textureView)
     AutoFitTextureView textureView;
     Unbinder unbinder;
-    @BindView(R.id.btn_record)
-    Button btnRecord;
 
-    private boolean isRecordVideo;
-
-    private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-
-    public static CameraV2Fragment newInstance() {
-        return new CameraV2Fragment();
+    public static CameraV1TextureFragment newInstance() {
+        return new CameraV1TextureFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_camerav2, container, false);
+        View view = inflater.inflate(R.layout.fragment_camerav1_texture, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -69,36 +68,29 @@ public class CameraV2Fragment extends Fragment {
 
             @Override
             public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
+                //预览的数据回调
             }
         });
+
     }
 
-    @OnClick({R.id.btn_shut, R.id.btn_record})
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    /**
+     * 点击事件
+     * @param view
+     */
+    @OnClick({R.id.btn_shut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_shut:
-                Camera2Helper.getInstance().takePicture();
-                break;
-            case R.id.btn_record:
-                if (isRecordVideo) {
-                    Camera2Helper.getInstance().stopRecordingVideo();
-                    btnRecord.setText("开始录制");
-                    isRecordVideo = false;
-                } else {
-                    Camera2Helper.getInstance().startRecordingVideo();
-                    btnRecord.setText("停止录制");
-                    isRecordVideo = true;
-                }
+                Camera1Helper.getInstance().takePicture();
                 break;
         }
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Camera2Helper.getInstance().releaseCamera();
     }
 
     @Override
@@ -107,22 +99,15 @@ public class CameraV2Fragment extends Fragment {
             openCamera();
         }
     }
-
     private void openCamera() {
-        if (!PermissionUtils.isGranted(permissions)) {
-            ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), permissions, 0);
+        if (ActivityCompat.checkSelfPermission(ActivityUtils.getTopActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), new String[]{Manifest.permission.CAMERA}, 0);
         } else {
-            Camera2Helper.getInstance().startCamera(textureView);
+            Camera1Helper.getInstance().openCamera(textureView.getSurfaceTexture(),textureView.getWidth(),textureView.getHeight());
         }
     }
 
     private void releaseCamera() {
-        Camera2Helper.getInstance().releaseCamera();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+        Camera1Helper.getInstance().releaseCamera();
     }
 }

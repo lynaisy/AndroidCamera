@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.commonutlis;
+package com.example.lyn.androidcamera.utlis;
 
 import android.content.res.Configuration;
 import android.graphics.Bitmap;

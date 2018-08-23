@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.camera1;
+package com.example.lyn.androidcamera.view.fragments.camera1;
 
 
 import android.Manifest;
@@ -13,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.example.lyn.androidcamera.R;
-import com.example.lyn.androidcamera.view.AutoFitSurfaceView;
+import com.example.lyn.androidcamera.utlis.camerav1.AvcEncoder;
+import com.example.lyn.androidcamera.utlis.camerav1.Camera1Helper;
+import com.example.lyn.androidcamera.view.customviews.AutoFitSurfaceView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +35,12 @@ public class CameraV1Fragment extends Fragment implements SurfaceHolder.Callback
     AutoFitSurfaceView autoFitSurfaceView;
     Unbinder unbinder;
     private SurfaceHolder holder;
+    private AvcEncoder avcCodec;
 
     public static CameraV1Fragment newInstance() {
         return new CameraV1Fragment();
     }
+
 
     @Nullable
     @Override
@@ -64,6 +67,8 @@ public class CameraV1Fragment extends Fragment implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         openCamera();
+        avcCodec = new AvcEncoder(Camera1Helper.getInstance().getViewWidth(), Camera1Helper.getInstance().getViewHeight());
+        avcCodec.startEncoderThread();
     }
 
     @Override
@@ -73,12 +78,14 @@ public class CameraV1Fragment extends Fragment implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        avcCodec.stopThread();
         releaseCamera();
     }
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         //预览的数据回调
+        avcCodec.putYuvData(data, data.length);
     }
 
     /**
@@ -107,6 +114,7 @@ public class CameraV1Fragment extends Fragment implements SurfaceHolder.Callback
             ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), new String[]{Manifest.permission.CAMERA}, 0);
         } else {
             Camera1Helper.getInstance().openCamera(autoFitSurfaceView).setPreviewCallback(this);
+            autoFitSurfaceView.setAspectRatio(Camera1Helper.getInstance().getViewWidth(), Camera1Helper.getInstance().getViewHeight());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.camera2.utils;
+package com.example.lyn.androidcamera.utlis.camerav2;
 
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -15,7 +15,7 @@ import android.util.Size;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.example.lyn.androidcamera.Constants;
-import com.example.lyn.androidcamera.view.AutoFitTextureView;
+import com.example.lyn.androidcamera.view.customviews.AutoFitTextureView;
 
 import java.util.Arrays;
 import java.util.Collections;

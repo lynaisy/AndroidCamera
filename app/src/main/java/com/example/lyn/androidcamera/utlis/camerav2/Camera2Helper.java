@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.camera2;
+package com.example.lyn.androidcamera.utlis.camerav2;
 
 import android.Manifest;
 import android.content.Context;
@@ -23,16 +23,12 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
-import android.view.TextureView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
-import com.example.lyn.androidcamera.commonutlis.SavePictureUtil;
-import com.example.lyn.androidcamera.view.AutoFitTextureView;
-import com.example.lyn.androidcamera.camera2.utils.CameraOutputs;
-import com.example.lyn.androidcamera.camera2.utils.ConfigureTransform;
-import com.example.lyn.androidcamera.camera2.utils.MediaRecorderSetUp;
+import com.example.lyn.androidcamera.utlis.SavePictureUtil;
+import com.example.lyn.androidcamera.view.customviews.AutoFitTextureView;
 
 import java.io.File;
 import java.io.IOException;

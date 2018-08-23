@@ -1,29 +1,16 @@
-package com.example.lyn.androidcamera.camera1;
+package com.example.lyn.androidcamera.utlis.camerav1;
 
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
-import android.view.View;
+import android.util.Size;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.example.lyn.androidcamera.Constants;
-import com.example.lyn.androidcamera.camera1.utils.ParameterUtil;
-import com.example.lyn.androidcamera.commonutlis.SavePictureUtil;
-import com.example.lyn.androidcamera.view.AutoFitSurfaceView;
-import com.example.lyn.androidcamera.view.AutoFitTextureView;
+import com.example.lyn.androidcamera.utlis.SavePictureUtil;
+import com.example.lyn.androidcamera.view.customviews.AutoFitSurfaceView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2018/6/6.
@@ -63,7 +50,7 @@ public class Camera1Helper {
         camera = Camera.open(Integer.parseInt("1"));
         try {
             camera.setPreviewDisplay(surfaceView.getHolder());
-            setParameters(surfaceView);
+            setParameters();
             setDisplayOrientation();
             camera.startPreview();
         } catch (IOException e) {
@@ -75,16 +62,15 @@ public class Camera1Helper {
     /**
      * 打开相机
      *
-     * @param textureView
      * @return
      */
-    public Camera openCamera(AutoFitTextureView textureView) {
-        viewWidth = textureView.getWidth();
-        viewHeight = textureView.getHeight();
+    public Camera openCamera(SurfaceTexture surfaceTexture, int width, int height) {
+        viewWidth = width;
+        viewHeight = height;
         camera = Camera.open(Integer.parseInt(Constants.SELECT_CAMERA_ID));
         try {
-            camera.setPreviewTexture(textureView.getSurfaceTexture());
-            setParameters(textureView);
+            camera.setPreviewTexture(surfaceTexture);
+            setParameters();
             setDisplayOrientation();
             camera.startPreview();
             camera.cancelAutoFocus();
@@ -93,6 +79,7 @@ public class Camera1Helper {
         }
         return camera;
     }
+
 
     /**
      * 释放相机
@@ -135,10 +122,12 @@ public class Camera1Helper {
     /**
      * 设置预览参数
      */
-    private void setParameters(View view) {
+    private void setParameters() {
         Camera.Parameters parameters = camera.getParameters();
-        ParameterUtil.setPreviewSize(parameters, viewWidth, viewHeight, view);
+        Size previewSize = ParameterUtil.setPreviewSize(parameters, viewWidth, viewHeight);
         ParameterUtil.setPictureSize(parameters, viewWidth, viewHeight);
+        viewWidth = previewSize.getWidth();
+        viewHeight = previewSize.getHeight();
 //        ParameterUtil.setOthers(parameters);
         camera.setParameters(parameters);
     }
@@ -153,5 +142,12 @@ public class Camera1Helper {
         }
     }
 
+    public int getViewWidth() {
+        return viewWidth;
+    }
+
+    public int getViewHeight() {
+        return viewHeight;
+    }
 
 }

@@ -1,30 +1,25 @@
-package com.example.lyn.androidcamera.view;
+package com.example.lyn.androidcamera.view.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.TextureView;
+import android.view.SurfaceView;
 
 /**
- * 用于拍照界面的TextureView
- * Created by Shao Shizhang on 2018/3/20.
+ * Created by Administrator on 2018/6/6.
  */
 
-public class AutoFitTextureView extends TextureView {
+public class AutoFitSurfaceView extends SurfaceView {
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
 
-    public AutoFitTextureView(Context context) {
-        this(context, null);
+
+    public AutoFitSurfaceView(Context context) {
+        super(context);
     }
 
-    public AutoFitTextureView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    public AutoFitSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
-
-    public AutoFitTextureView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
 
     public void setAspectRatio(int width, int height) {
         if (width < 0 || height < 0) {
@@ -44,11 +39,12 @@ public class AutoFitTextureView extends TextureView {
             setMeasuredDimension(width, height);
         } else {
             if (width < height * mRatioWidth / mRatioHeight) {
-                setMeasuredDimension(width, width * mRatioHeight / mRatioWidth);
+                height = width * mRatioHeight / mRatioWidth;
+                setMeasuredDimension(width, height);
             } else {
-                setMeasuredDimension(height * mRatioWidth / mRatioHeight, height);
+                width = height * mRatioWidth / mRatioHeight;
+                setMeasuredDimension(width, height);
             }
         }
     }
 }
-

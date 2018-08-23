@@ -1,15 +1,9 @@
-package com.example.lyn.androidcamera.camera1.utils;
+package com.example.lyn.androidcamera.utlis.camerav1;
 
-import android.content.res.Configuration;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.util.Size;
-import android.view.View;
 
-import com.blankj.utilcode.util.ActivityUtils;
-import com.example.lyn.androidcamera.camera2.utils.CameraSizeOption;
-import com.example.lyn.androidcamera.view.AutoFitSurfaceView;
-import com.example.lyn.androidcamera.view.AutoFitTextureView;
+import com.example.lyn.androidcamera.utlis.camerav2.CameraSizeOption;
 
 import java.util.List;
 
@@ -26,23 +20,24 @@ public class ParameterUtil {
      * @param viewWidth
      * @param viewHeight
      */
-    public static void setPreviewSize(Camera.Parameters parameters, int viewWidth, int viewHeight, View view) {
+    public static Size setPreviewSize(Camera.Parameters parameters, int viewWidth, int viewHeight) {
         Size previewSize = CameraSizeOption.chooseOptimalSize(getSupportPreviewSizes(parameters), viewWidth, viewHeight);
         parameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
-        int orientation = ActivityUtils.getTopActivity().getResources().getConfiguration().orientation;
-        if (view instanceof AutoFitSurfaceView) {
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                ((AutoFitSurfaceView) view).setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
-            } else {
-                ((AutoFitSurfaceView) view).setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
-            }
-        } else if (view instanceof AutoFitTextureView) {
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                ((AutoFitTextureView) view).setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
-            } else {
-                ((AutoFitTextureView) view).setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
-            }
-        }
+//        int orientation = ActivityUtils.getTopActivity().getResources().getConfiguration().orientation;
+//        if (view instanceof AutoFitSurfaceView) {
+//            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                ((AutoFitSurfaceView) view).setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
+//            } else {
+//                ((AutoFitSurfaceView) view).setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
+//            }
+//        } else if (view instanceof AutoFitTextureView) {
+//            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                ((AutoFitTextureView) view).setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
+//            } else {
+//                ((AutoFitTextureView) view).setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
+//            }
+//        }
+        return previewSize;
     }
 
     /**

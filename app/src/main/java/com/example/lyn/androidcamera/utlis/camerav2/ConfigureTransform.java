@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.camera2.utils;
+package com.example.lyn.androidcamera.utlis.camerav2;
 
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -25,7 +25,6 @@ public class ConfigureTransform {
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void configureTransform(TextureView textureView, Size mPreviewSize, int viewWidth, int viewHeight) {
-
         if (null == textureView || null == mPreviewSize) {
             return;
         }
