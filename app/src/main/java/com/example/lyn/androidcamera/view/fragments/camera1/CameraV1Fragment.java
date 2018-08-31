@@ -111,7 +111,7 @@ public class CameraV1Fragment extends Fragment implements SurfaceHolder.Callback
 
     private void openCamera() {
         if (ActivityCompat.checkSelfPermission(ActivityUtils.getTopActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), new String[]{Manifest.permission.CAMERA}, 0);
+            ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         } else {
             Camera1Helper.getInstance().openCamera(autoFitSurfaceView).setPreviewCallback(this);
             autoFitSurfaceView.setAspectRatio(Camera1Helper.getInstance().getViewWidth(), Camera1Helper.getInstance().getViewHeight());
