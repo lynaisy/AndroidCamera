@@ -2,17 +2,24 @@ package com.example.lyn.androidcamera.view.customviews;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import android.Manifest;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
+import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.example.lyn.androidcamera.utlis.Constants;
 import com.example.lyn.androidcamera.utlis.camerav1.Camera1Helper;
 import com.example.lyn.androidcamera.utlis.DirectDrawer;
+import com.example.lyn.androidcamera.utlis.camerav2.Camera2Helper;
 
 public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "yanzi";
@@ -20,6 +27,8 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
     SurfaceTexture mSurface;
     int mTextureID = -1;
     DirectDrawer mDirectDrawer;
+    private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+
     public CameraGLSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // TODO Auto-generated constructor stub
@@ -28,6 +37,7 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
         setRenderer(this);
         setRenderMode(RENDERMODE_WHEN_DIRTY);
     }
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         // TODO Auto-generated method stub
@@ -36,7 +46,7 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
         mSurface = new SurfaceTexture(mTextureID);
         mSurface.setOnFrameAvailableListener(this);
         mDirectDrawer = new DirectDrawer(mTextureID);
-        Camera1Helper.getInstance().openCamera(mSurface,getWidth(),getHeight());
+        openCamera();
     }
 
 
@@ -46,6 +56,7 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
         Log.i(TAG, "onSurfaceChanged...");
         GLES20.glViewport(0, 0, width, height);
     }
+
     @Override
     public void onDrawFrame(GL10 gl) {
         // TODO Auto-generated method stub
@@ -57,10 +68,6 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
         mSurface.getTransformMatrix(mtx);
         mDirectDrawer.draw(mtx);
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     @Override
     public void onPause() {
@@ -69,14 +76,21 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
         Camera1Helper.getInstance().releaseCamera();
     }
 
-    private int createTextureID()
-    {
+    public void openCamera() {
+        if (!PermissionUtils.isGranted(permissions)) {
+            ActivityCompat.requestPermissions(ActivityUtils.getTopActivity(), permissions, Constants.PermissionsResCode.CAMERA_RES_CODE);
+        } else {
+            Camera1Helper.getInstance().openCamera(mSurface, getWidth(), getHeight());
+        }
+    }
+
+    private int createTextureID() {
         int[] texture = new int[1];
 
         GLES20.glGenTextures(1, texture, 0);
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, texture[0]);
         GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
-                GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR);
+                GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
         GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
                 GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
         GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
@@ -86,9 +100,11 @@ public class CameraGLSurfaceView extends GLSurfaceView implements Renderer, Surf
 
         return texture[0];
     }
-    public SurfaceTexture _getSurfaceTexture(){
+
+    public SurfaceTexture _getSurfaceTexture() {
         return mSurface;
     }
+
     @Override
     public void onFrameAvailable(SurfaceTexture surfaceTexture) {
         // TODO Auto-generated method stub

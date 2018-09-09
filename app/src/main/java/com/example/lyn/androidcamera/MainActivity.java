@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.lyn.androidcamera.view.fragments.camera1.CameraV1Fragment;
 import com.example.lyn.androidcamera.view.fragments.camera1.CameraV1TextureFragment;
 import com.example.lyn.androidcamera.view.fragments.camera2.CameraV2Fragment;
+import com.example.lyn.androidcamera.view.fragments.opengl.CameraV1GLSurfaceFragment;
 
 import butterknife.ButterKnife;
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         //方式二：camera1 + surfaceView
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, CameraV1Fragment.newInstance())
+                .add(R.id.container, CameraV1GLSurfaceFragment.newInstance())
                 .commit();
 
 //        //方式三：camera2 + textureView
