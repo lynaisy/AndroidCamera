@@ -15,6 +15,8 @@ import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Environment;
 
+import com.blankj.utilcode.util.Utils;
+
 public class AvcEncoder {
     // 保存yuv数据的BlockingQueue
     private ArrayBlockingQueue<byte[]> yuvBlockingQueue = new ArrayBlockingQueue<byte[]>(yuvQueueSize);
@@ -33,7 +35,7 @@ public class AvcEncoder {
 
     private byte[] m_info = null;
     private byte[] configbyte;
-    private static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.h264";
+    private static String path = Utils.getApp().getCacheDir() + "/test";
     private BufferedOutputStream outputStream;
     FileOutputStream outStream;
 
@@ -188,9 +190,11 @@ public class AvcEncoder {
      */
     private void createfile() {
         File file = new File(path);
-        if (file.exists()) {
-            file.delete();
+        if (!file.exists()) {
+            file.mkdirs();
         }
+        file = new File(path + "h264.txt");
+        boolean b = file.exists();
         try {
             outputStream = new BufferedOutputStream(new FileOutputStream(file));
         } catch (Exception e) {
