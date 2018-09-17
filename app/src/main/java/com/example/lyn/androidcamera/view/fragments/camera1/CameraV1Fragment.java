@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.example.lyn.androidcamera.R;
-import com.example.lyn.androidcamera.utlis.camerav1.AvcEncoder;
+import com.example.lyn.androidcamera.utlis.AvcEncoder;
 import com.example.lyn.androidcamera.utlis.camerav1.Camera1Helper;
 import com.example.lyn.androidcamera.view.customviews.AutoFitSurfaceView;
 

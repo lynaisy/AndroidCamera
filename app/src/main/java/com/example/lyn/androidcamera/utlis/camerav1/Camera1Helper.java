@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.util.Size;
+import android.view.Surface;
+import android.view.SurfaceHolder;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.example.lyn.androidcamera.Constants;
@@ -19,25 +21,17 @@ import java.io.IOException;
 public class Camera1Helper {
     private volatile boolean isTakePicture;
     private Camera camera;
-
-
+    private Surface  holder;
     int viewWidth, viewHeight;
-
     private Camera1Helper() {
         isTakePicture = false;
-
     }
-
     public static Camera1Helper getInstance() {
         return InstanceHolder.INSTANCE;
     }
-
-
     private static class InstanceHolder {
         private static Camera1Helper INSTANCE = new Camera1Helper();
     }
-
-
     /**
      * 打开相机
      *
@@ -150,4 +144,7 @@ public class Camera1Helper {
         return viewHeight;
     }
 
+    public Camera getCamera() {
+        return camera;
+    }
 }

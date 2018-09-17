@@ -1,4 +1,4 @@
-package com.example.lyn.androidcamera.utlis.camerav1;
+package com.example.lyn.androidcamera.utlis;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
